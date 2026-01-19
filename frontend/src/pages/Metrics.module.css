@@ -1,0 +1,95 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  color: var(--color-gray-500);
+}
+
+.summary {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-4);
+}
+
+.metricCard {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-4) !important;
+}
+
+.metricIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  flex-shrink: 0;
+}
+
+.metricContent {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.metricValue {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-gray-900);
+  line-height: 1.2;
+}
+
+.metricLabel {
+  font-size: 12px;
+  color: var(--color-gray-500);
+  font-weight: 500;
+}
+
+.chartCard {
+  padding: var(--space-5) !important;
+}
+
+.chartTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-gray-700);
+  margin: 0 0 var(--space-2) 0;
+}
+
+.chartDescription {
+  font-size: 13px;
+  color: var(--color-gray-500);
+  margin: 0 0 var(--space-4) 0;
+  line-height: 1.5;
+}
+
+.charts {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-4);
+}
+
+@media (max-width: 1200px) {
+  .summary {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .charts {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .summary {
+    grid-template-columns: 1fr;
+  }
+}

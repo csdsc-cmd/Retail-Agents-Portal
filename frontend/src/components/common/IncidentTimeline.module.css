@@ -1,0 +1,121 @@
+.timeline {
+  display: flex;
+  flex-direction: column;
+}
+
+.event {
+  display: flex;
+  gap: var(--space-3);
+  min-height: 80px;
+}
+
+.connector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 20px;
+  flex-shrink: 0;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  border: 2px solid white;
+  box-shadow: 0 0 0 2px currentColor;
+}
+
+.dot.critical {
+  background-color: var(--color-severity-critical);
+  color: var(--color-severity-critical);
+}
+
+.dot.high {
+  background-color: var(--color-severity-high);
+  color: var(--color-severity-high);
+}
+
+.dot.medium {
+  background-color: var(--color-severity-medium);
+  color: var(--color-severity-medium);
+}
+
+.dot.low {
+  background-color: var(--color-severity-low);
+  color: var(--color-severity-low);
+}
+
+.dot.info {
+  background-color: var(--color-primary-500);
+  color: var(--color-primary-500);
+}
+
+.line {
+  width: 2px;
+  flex: 1;
+  background-color: var(--color-gray-200);
+  margin-top: 4px;
+}
+
+.content {
+  flex: 1;
+  padding-bottom: var(--space-4);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-2);
+}
+
+.time {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-gray-600);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.date {
+  font-weight: 400;
+  color: var(--color-gray-400);
+}
+
+.title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-gray-700);
+  margin: 0 0 var(--space-1) 0;
+}
+
+.description {
+  font-size: 13px;
+  color: var(--color-gray-600);
+  margin: 0 0 var(--space-2) 0;
+  line-height: 1.4;
+}
+
+.agent {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: var(--color-gray-500);
+  background-color: var(--color-gray-100);
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+}
+
+.agent svg {
+  opacity: 0.7;
+}
+
+.more {
+  padding: var(--space-3) var(--space-3) var(--space-3) calc(20px + var(--space-3));
+  font-size: 12px;
+  color: var(--color-primary-500);
+  font-weight: 500;
+}

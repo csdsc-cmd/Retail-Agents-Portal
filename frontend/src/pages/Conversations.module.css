@@ -1,0 +1,125 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  color: var(--color-gray-500);
+}
+
+.tableCard {
+  padding: 0;
+  overflow: hidden;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th {
+  background-color: var(--color-gray-50);
+  padding: var(--space-3) var(--space-4);
+  text-align: left;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-gray-600);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--color-gray-200);
+}
+
+.table td {
+  padding: var(--space-3) var(--space-4);
+  font-size: 13px;
+  color: var(--color-gray-700);
+  border-bottom: 1px solid var(--color-gray-100);
+}
+
+.table tr:hover td {
+  background-color: var(--color-gray-50);
+}
+
+.agentCell {
+  min-width: 180px;
+}
+
+.agentInfo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.agentName {
+  font-weight: 500;
+  color: var(--color-gray-900);
+}
+
+.contextCell {
+  min-width: 160px;
+}
+
+.contextInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.storeName {
+  font-weight: 500;
+  color: var(--color-gray-700);
+  font-size: 13px;
+}
+
+.eventType {
+  font-size: 11px;
+  color: var(--color-gray-500);
+}
+
+.noContext {
+  color: var(--color-gray-400);
+}
+
+.dateCell {
+  white-space: nowrap;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  border-top: 1px solid var(--color-gray-200);
+}
+
+.pageButton {
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--color-gray-300);
+  border-radius: var(--radius-md);
+  background-color: white;
+  font-size: 13px;
+  color: var(--color-gray-700);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.pageButton:hover:not(:disabled) {
+  background-color: var(--color-gray-50);
+  border-color: var(--color-gray-400);
+}
+
+.pageButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pageInfo {
+  font-size: 13px;
+  color: var(--color-gray-500);
+}

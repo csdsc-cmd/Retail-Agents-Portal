@@ -1,0 +1,48 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  font-weight: 500;
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+}
+
+.medium {
+  padding: 4px 10px;
+  font-size: 12px;
+}
+
+.small {
+  padding: 2px 6px;
+  font-size: 10px;
+}
+
+/* Category Colors - matching D365 palette */
+.inventory-intelligence {
+  background-color: rgba(0, 120, 212, 0.12);
+  color: var(--color-category-inventory);
+}
+
+.pricing-promotions {
+  background-color: rgba(16, 124, 16, 0.12);
+  color: var(--color-category-pricing);
+}
+
+.store-operations {
+  background-color: rgba(255, 185, 0, 0.15);
+  color: #996f00;
+}
+
+.customer-service-returns {
+  background-color: rgba(135, 100, 184, 0.12);
+  color: var(--color-category-customer);
+}
+
+.loss-prevention {
+  background-color: rgba(209, 52, 56, 0.12);
+  color: var(--color-category-loss);
+}
+
+.executive-insights {
+  background-color: rgba(0, 188, 242, 0.12);
+  color: #007d9e;
+}

@@ -1,0 +1,89 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  color: var(--color-gray-500);
+}
+
+.summary {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+}
+
+.totalCard {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+  background: linear-gradient(135deg, var(--color-primary-500) 0%, var(--color-primary-600) 100%);
+  color: white;
+  padding: var(--space-6) !important;
+}
+
+.totalIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  background-color: rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius-md);
+}
+
+.totalContent {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.totalLabel {
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.totalValue {
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.charts {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-4);
+}
+
+.chartCard {
+  padding: var(--space-5) !important;
+}
+
+.chartTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-gray-700);
+  margin: 0 0 var(--space-2) 0;
+}
+
+.chartDescription {
+  font-size: 13px;
+  color: var(--color-gray-500);
+  margin: 0 0 var(--space-4) 0;
+  line-height: 1.5;
+}
+
+.tableCard {
+  padding: var(--space-5) !important;
+}
+
+@media (max-width: 1200px) {
+  .charts {
+    grid-template-columns: 1fr;
+  }
+}

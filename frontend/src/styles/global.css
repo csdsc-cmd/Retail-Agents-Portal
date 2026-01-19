@@ -1,0 +1,141 @@
+:root {
+  /* D365 Primary Blue */
+  --color-primary-50: #f3f9ff;
+  --color-primary-100: #d2e6fc;
+  --color-primary-500: #0078d4;
+  --color-primary-600: #106ebe;
+  --color-primary-700: #005a9e;
+  --color-primary-800: #004578;
+
+  /* D365 Neutrals */
+  --color-gray-50: #faf9f8;
+  --color-gray-100: #f3f2f1;
+  --color-gray-200: #edebe9;
+  --color-gray-300: #d2d0ce;
+  --color-gray-400: #a19f9d;
+  --color-gray-500: #605e5c;
+  --color-gray-600: #323130;
+  --color-gray-700: #201f1e;
+  --color-gray-800: #161514;
+  --color-gray-900: #11100f;
+
+  /* D365 Status Colors */
+  --color-success: #107c10;
+  --color-success-light: #dff6dd;
+  --color-warning: #ffb900;
+  --color-warning-light: #fff4ce;
+  --color-error: #d13438;
+  --color-error-light: #fde7e9;
+  --color-info: #0078d4;
+  --color-info-light: #deecf9;
+
+  /* Severity Colors for incidents */
+  --color-critical: #a4262c;
+  --color-critical-light: #f8d7da;
+  --color-high: #d13438;
+  --color-high-light: #fde7e9;
+  --color-medium: #ffb900;
+  --color-medium-light: #fff4ce;
+  --color-low: #0078d4;
+  --color-low-light: #deecf9;
+
+  /* Category Colors */
+  --color-category-inventory: #0078d4;
+  --color-category-pricing: #107c10;
+  --color-category-operations: #ffb900;
+  --color-category-customer: #8764b8;
+  --color-category-loss: #d13438;
+  --color-category-executive: #00bcf2;
+
+  /* Background */
+  --bg-page: #faf9f8;
+  --bg-card: #ffffff;
+  --bg-sidebar: #0078d4;
+  --bg-sidebar-dark: #005a9e;
+
+  /* Typography - Segoe UI for D365 */
+  --font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif;
+
+  /* Spacing */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+
+  /* Border radius - Fluent design uses subtle rounding */
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 6px;
+  --radius-xl: 8px;
+
+  /* Shadows - Fluent elevation */
+  --shadow-sm: 0 1.6px 3.6px 0 rgba(0,0,0,.132), 0 0.3px 0.9px 0 rgba(0,0,0,.108);
+  --shadow-md: 0 3.2px 7.2px 0 rgba(0,0,0,.132), 0 0.6px 1.8px 0 rgba(0,0,0,.108);
+  --shadow-lg: 0 6.4px 14.4px 0 rgba(0,0,0,.132), 0 1.2px 3.6px 0 rgba(0,0,0,.108);
+
+  /* Sidebar */
+  --sidebar-width: 240px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-family);
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--color-gray-700);
+  background-color: var(--bg-page);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: var(--color-primary-500);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--color-gray-700);
+}
+
+h1 { font-size: 28px; }
+h2 { font-size: 20px; }
+h3 { font-size: 18px; }
+h4 { font-size: 16px; }
+
+/* Utility classes */
+.text-muted {
+  color: var(--color-gray-500);
+}
+
+.text-success {
+  color: var(--color-success);
+}
+
+.text-warning {
+  color: var(--color-warning);
+}
+
+.text-error {
+  color: var(--color-error);
+}

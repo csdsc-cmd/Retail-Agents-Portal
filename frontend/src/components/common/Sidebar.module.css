@@ -1,0 +1,121 @@
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--sidebar-width);
+  height: 100vh;
+  background: linear-gradient(180deg, var(--bg-sidebar) 0%, var(--bg-sidebar-dark) 100%);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+}
+
+.header {
+  padding: var(--space-4);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.logoIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-md);
+  color: white;
+}
+
+.logoText {
+  display: flex;
+  flex-direction: column;
+}
+
+.logoTitle {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.logoSubtitle {
+  font-size: 12px;
+  font-weight: 400;
+  opacity: 0.8;
+}
+
+.nav {
+  flex: 1;
+  padding: var(--space-4) var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow-y: auto;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 10px 12px;
+  border-radius: var(--radius-md);
+  color: rgba(255, 255, 255, 0.85);
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+
+.navItem:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+  text-decoration: none;
+}
+
+.navItem.active {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.navIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.navLabel {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.footer {
+  padding: var(--space-4);
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.branding {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.poweredBy {
+  font-size: 10px;
+  opacity: 0.6;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.brandName {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}

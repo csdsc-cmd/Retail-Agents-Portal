@@ -1,0 +1,451 @@
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  color: var(--color-gray-500);
+}
+
+/* Incident Alert Banner */
+.incidentAlert {
+  background: linear-gradient(135deg, rgba(209, 52, 56, 0.08) 0%, rgba(209, 52, 56, 0.04) 100%);
+  border: 1px solid rgba(209, 52, 56, 0.2);
+  border-left: 4px solid var(--color-severity-critical);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+}
+
+.alertHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+}
+
+.alertIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-severity-critical);
+}
+
+.alertTitle {
+  font-weight: 600;
+  color: var(--color-severity-critical);
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.alertText {
+  margin: 0;
+  color: var(--color-gray-700);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* Metrics Grid */
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-4);
+}
+
+.metricCard {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-4) !important;
+}
+
+.metricIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  flex-shrink: 0;
+}
+
+.metricContent {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.metricValue {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-gray-900);
+  line-height: 1.2;
+}
+
+.metricLabel {
+  font-size: 12px;
+  color: var(--color-gray-500);
+  font-weight: 500;
+}
+
+/* Main Grid */
+.mainGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-5);
+}
+
+.leftColumn,
+.rightColumn {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+/* Section Titles */
+.sectionTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-gray-700);
+  margin: 0 0 var(--space-2) 0;
+}
+
+.sectionDescription {
+  font-size: 13px;
+  color: var(--color-gray-500);
+  margin: 0 0 var(--space-4) 0;
+  line-height: 1.5;
+}
+
+/* Incident Detail Card */
+.incidentDetailCard {
+  padding: var(--space-5) !important;
+}
+
+.timelineTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-gray-600);
+  margin: var(--space-5) 0 var(--space-3) 0;
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-gray-200);
+}
+
+/* No Incident Card */
+.noIncidentCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--space-8) var(--space-6) !important;
+  min-height: 280px;
+}
+
+.noIncidentIcon {
+  color: var(--color-success);
+  margin-bottom: var(--space-3);
+}
+
+.noIncidentCard h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-gray-700);
+  margin: 0 0 var(--space-2) 0;
+}
+
+.noIncidentCard p {
+  font-size: 14px;
+  color: var(--color-gray-500);
+  margin: 0;
+}
+
+/* Categories Card */
+.categoriesCard {
+  padding: var(--space-5) !important;
+}
+
+.categoriesList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.categoryItem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.categoryItem:hover {
+  background-color: var(--color-gray-100);
+}
+
+.categoryColor {
+  width: 4px;
+  height: 32px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.categoryInfo {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 2px;
+}
+
+.categoryName {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-gray-700);
+}
+
+.categoryCount {
+  font-size: 11px;
+  color: var(--color-gray-500);
+}
+
+/* Chart Card */
+.chartCard {
+  padding: var(--space-5) !important;
+}
+
+.chartContainer {
+  margin: 0 -8px;
+}
+
+/* Health Card */
+.healthCard {
+  padding: var(--space-5) !important;
+}
+
+.healthGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-5);
+}
+
+.healthItem {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.healthLabel {
+  font-size: 12px;
+  color: var(--color-gray-500);
+  font-weight: 500;
+}
+
+.healthValue {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-gray-900);
+}
+
+.healthBar {
+  height: 6px;
+  background-color: var(--color-gray-200);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.healthProgress {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+.healthMeta {
+  font-size: 11px;
+  color: var(--color-gray-400);
+}
+
+/* Period Toggle */
+.periodToggle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-2);
+}
+
+.periodLabel {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-gray-600);
+}
+
+.periodButtons {
+  display: flex;
+  gap: var(--space-1);
+  background-color: var(--color-gray-100);
+  padding: 3px;
+  border-radius: var(--radius-md);
+}
+
+.periodButton {
+  padding: var(--space-2) var(--space-3);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-gray-600);
+  background: none;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.periodButton:hover {
+  color: var(--color-gray-700);
+}
+
+.periodButton.active {
+  background-color: white;
+  color: var(--color-primary-500);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+}
+
+/* Savings Card */
+.savingsCard {
+  border-left: 4px solid var(--color-success);
+}
+
+/* Platform Grid */
+.platformGrid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.platformItem {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.platformHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.platformDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.platformName {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-gray-700);
+}
+
+.platformValue {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-gray-900);
+}
+
+.platformBar {
+  height: 8px;
+  background-color: var(--color-gray-200);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.platformProgress {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+/* Quick Actions */
+.quickActionsCard {
+  padding: var(--space-5) !important;
+}
+
+.quickActions {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-4);
+}
+
+.quickAction {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  background-color: var(--color-gray-50);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-align: left;
+}
+
+.quickAction:hover {
+  background-color: var(--color-gray-100);
+  border-color: var(--color-primary-500);
+}
+
+.quickAction svg {
+  color: var(--color-primary-500);
+}
+
+.quickAction span:first-of-type {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-gray-700);
+}
+
+.quickActionDesc {
+  font-size: 12px;
+  color: var(--color-gray-500);
+  line-height: 1.4;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .metrics {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .mainGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .healthGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .quickActions {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .healthGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .periodToggle {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
