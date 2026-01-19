@@ -1,0 +1,199 @@
+.banner {
+  width: 100%;
+  border-bottom: 1px solid transparent;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.banner.healthy {
+  background-color: var(--color-success-light);
+  border-color: var(--color-success);
+}
+
+.banner.degraded {
+  background-color: var(--color-warning-light);
+  border-color: var(--color-warning);
+}
+
+.banner.critical {
+  background-color: var(--color-error-light);
+  border-color: var(--color-error);
+  animation: criticalShake 0.5s ease-in-out;
+}
+
+@keyframes criticalShake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-2px); }
+  20%, 40%, 60%, 80% { transform: translateX(2px); }
+}
+
+.bannerContent {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-3) var(--space-6);
+  width: 100%;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 13px;
+  text-align: left;
+  transition: opacity 0.2s ease;
+}
+
+.bannerContent:hover {
+  opacity: 0.9;
+}
+
+.statusIndicator {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+}
+
+.pulse {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.healthy .pulse {
+  background-color: var(--color-success);
+}
+
+.degraded .pulse {
+  background-color: var(--color-warning);
+}
+
+.critical .pulse {
+  background-color: var(--color-error);
+  animation: pulseCritical 1s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.4;
+  }
+  50% {
+    transform: scale(1.3);
+    opacity: 0.1;
+  }
+}
+
+@keyframes pulseCritical {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale(1.5);
+    opacity: 0.1;
+  }
+}
+
+.icon {
+  position: relative;
+  z-index: 1;
+  font-weight: 700;
+  font-size: 12px;
+}
+
+.healthy .icon {
+  color: var(--color-success);
+}
+
+.degraded .icon {
+  color: var(--color-warning);
+}
+
+.critical .icon {
+  color: var(--color-error);
+}
+
+.statusText {
+  font-weight: 600;
+  color: var(--color-gray-700);
+}
+
+.agentCount {
+  color: var(--color-gray-500);
+}
+
+.lastUpdated {
+  color: var(--color-gray-400);
+  font-size: 12px;
+  margin-left: auto;
+}
+
+.expandIcon {
+  color: var(--color-gray-400);
+  font-size: 10px;
+  transition: transform 0.2s ease;
+}
+
+.expandIcon.expanded {
+  transform: rotate(180deg);
+}
+
+/* Breakdown panel */
+.breakdown {
+  display: flex;
+  gap: var(--space-6);
+  padding: var(--space-3) var(--space-6);
+  padding-left: calc(var(--space-6) + 24px + var(--space-4));
+  background-color: rgba(255, 255, 255, 0.5);
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  animation: slideDown 0.2s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.breakdownItem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.breakdownDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.healthyDot {
+  background-color: var(--color-success);
+}
+
+.degradedDot {
+  background-color: var(--color-warning);
+}
+
+.criticalDot {
+  background-color: var(--color-error);
+}
+
+.breakdownLabel {
+  color: var(--color-gray-600);
+  font-size: 13px;
+}
+
+.breakdownCount {
+  font-weight: 600;
+  color: var(--color-gray-700);
+  font-size: 13px;
+}

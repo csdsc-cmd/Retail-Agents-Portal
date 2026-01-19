@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import Sidebar from './Sidebar';
+import GlobalHealthBanner from './GlobalHealthBanner';
 import styles from './Layout.module.css';
 
 interface LayoutProps {
@@ -11,6 +12,7 @@ export default function Layout({ children }: LayoutProps) {
     <div className={styles.layout}>
       <Sidebar />
       <main className={styles.main}>
+        <GlobalHealthBanner />
         <div className={styles.content}>
           {children}
         </div>

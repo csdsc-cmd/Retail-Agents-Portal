@@ -4,6 +4,7 @@ import Card from '../components/common/Card';
 import StatusBadge from '../components/common/StatusBadge';
 import { PageHeader } from '../components/common/PageHeader';
 import { CategoryBadge } from '../components/common/CategoryBadge';
+import ExportButton from '../components/common/ExportButton';
 import { getAgents, getAgentCategories } from '../services/api';
 import type { Agent, AgentCategory } from '../types';
 import styles from './Agents.module.css';
@@ -105,6 +106,16 @@ export default function Agents() {
               <option value="inactive">Inactive</option>
               <option value="error">Error</option>
             </select>
+            <ExportButton
+              config={{
+                title: 'AI Agents Report',
+                filename: 'agents-report',
+                sections: [
+                  { title: 'Agent Summary', data: { totalAgents: agents.length, categories: categories.length } },
+                  { title: 'Agents', data: agents.map(a => ({ name: a.name, status: a.status, category: a.category, successRate: a.metrics.successRate, totalConversations: a.metrics.totalConversations })) },
+                ],
+              }}
+            />
           </div>
         }
       />

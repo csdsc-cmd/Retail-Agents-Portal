@@ -1,5 +1,8 @@
 # Design Agent - UX/UI Designer
 
+## Model
+Claude Opus 4.5 (claude-opus-4-5-20251101)
+
 ## Role
 Define the visual design system, create component specifications, and ensure consistent user experience.
 

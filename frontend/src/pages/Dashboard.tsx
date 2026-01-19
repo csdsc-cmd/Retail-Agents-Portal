@@ -1,80 +1,96 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Card from '../components/common/Card';
 import { PageHeader } from '../components/common/PageHeader';
 import { IncidentCard } from '../components/common/IncidentCard';
-import { IncidentTimeline } from '../components/common/IncidentTimeline';
-import { CategoryBadge } from '../components/common/CategoryBadge';
+import ExportButton from '../components/common/ExportButton';
+import AgentWatchtowerTable from '../components/dashboard/AgentWatchtowerTable';
+import IntegrationStatus from '../components/dashboard/IntegrationStatus';
 import {
   getIncidents,
-  getAgentCategories,
+  getAgents,
   getSavings,
   getTransactionStats,
 } from '../services/api';
-import type { Incident, SavingsData, TransactionStats, AgentCategory, Agent } from '../types';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
+import type { Incident, SavingsData, TransactionStats, Agent } from '../types';
 import styles from './Dashboard.module.css';
 
-const categoryColors: Record<AgentCategory, string> = {
-  'inventory-intelligence': '#0078d4',
-  'pricing-promotions': '#107c10',
-  'store-operations': '#ffb900',
-  'customer-service-returns': '#8764b8',
-  'executive-insights': '#00bcf2',
-};
+type DashboardView = 'watchtower' | 'analytics';
 
-const categoryLabels: Record<AgentCategory, string> = {
-  'inventory-intelligence': 'Inventory',
-  'pricing-promotions': 'Pricing',
-  'store-operations': 'Operations',
-  'customer-service-returns': 'Customer Service',
-  'executive-insights': 'Executive',
-};
-
-const platformLabels: Record<string, string> = {
-  'finops': 'D365 FinOps',
-  'crm': 'D365 CRM',
-  'business-central': 'Business Central',
-};
-
-const platformColors: Record<string, string> = {
-  'finops': '#0078d4',
-  'crm': '#8764b8',
-  'business-central': '#107c10',
-};
-
-type SavingsPeriod = 'daily' | 'weekly' | 'monthly' | 'yearly';
+const AUTO_REFRESH_INTERVALS = [
+  { label: 'Off', value: 0 },
+  { label: '30s', value: 30000 },
+  { label: '1m', value: 60000 },
+  { label: '5m', value: 300000 },
+];
 
 export default function Dashboard() {
   const navigate = useNavigate();
   const [incidents, setIncidents] = useState<Incident[]>([]);
-  const [categories, setCategories] = useState<{ category: AgentCategory; count: number; agents: Agent[] }[]>([]);
+  const [agents, setAgents] = useState<Agent[]>([]);
   const [savings, setSavings] = useState<SavingsData | null>(null);
   const [transactionStats, setTransactionStats] = useState<TransactionStats | null>(null);
   const [loading, setLoading] = useState(true);
-  const [savingsPeriod, setSavingsPeriod] = useState<SavingsPeriod>('monthly');
+  const [refreshing, setRefreshing] = useState(false);
+  const [view, setView] = useState<DashboardView>('watchtower');
+  const [lastRefresh, setLastRefresh] = useState<Date>(new Date());
+  const [autoRefreshInterval, setAutoRefreshInterval] = useState(60000); // Default 1 minute
+  const refreshTimerRef = useRef<NodeJS.Timeout | null>(null);
 
-  useEffect(() => {
-    async function loadData() {
-      try {
-        const [incidentsData, categoriesData, savingsData, statsData] = await Promise.all([
-          getIncidents(),
-          getAgentCategories(),
-          getSavings(),
-          getTransactionStats(),
-        ]);
-        setIncidents(incidentsData);
-        setCategories(categoriesData);
-        setSavings(savingsData);
-        setTransactionStats(statsData);
-      } catch (err) {
-        console.error('Failed to load dashboard:', err);
-      } finally {
+  const loadData = useCallback(async (isInitial = false) => {
+    if (!isInitial) {
+      setRefreshing(true);
+    }
+    try {
+      const [incidentsData, agentsResponse, savingsData, statsData] = await Promise.all([
+        getIncidents(),
+        getAgents(1, 100),
+        getSavings(),
+        getTransactionStats(),
+      ]);
+      setIncidents(incidentsData);
+      setAgents(agentsResponse.data);
+      setSavings(savingsData);
+      setTransactionStats(statsData);
+      setLastRefresh(new Date());
+    } catch (err) {
+      console.error('Failed to load dashboard:', err);
+    } finally {
+      if (isInitial) {
         setLoading(false);
+      } else {
+        setRefreshing(false);
       }
     }
-    loadData();
   }, []);
+
+  // Initial load
+  useEffect(() => {
+    loadData(true);
+  }, [loadData]);
+
+  // Auto-refresh timer
+  useEffect(() => {
+    if (refreshTimerRef.current) {
+      clearInterval(refreshTimerRef.current);
+    }
+
+    if (autoRefreshInterval > 0) {
+      refreshTimerRef.current = setInterval(() => {
+        loadData(false);
+      }, autoRefreshInterval);
+    }
+
+    return () => {
+      if (refreshTimerRef.current) {
+        clearInterval(refreshTimerRef.current);
+      }
+    };
+  }, [autoRefreshInterval, loadData]);
+
+  const handleManualRefresh = () => {
+    loadData(false);
+  };
 
   if (loading) {
     return <div className={styles.loading}>Loading command center...</div>;
@@ -82,22 +98,6 @@ export default function Dashboard() {
 
   const activeIncidents = incidents.filter(i => i.status === 'active' || i.status === 'investigating');
   const primaryIncident = activeIncidents[0];
-
-  const getSavingsValue = (breakdown: { daily: number; weekly: number; monthly: number; yearly: number }) => {
-    return breakdown[savingsPeriod];
-  };
-
-  const categoryChartData = savings ? Object.entries(savings.byCategory).map(([category, breakdown]) => ({
-    name: categoryLabels[category as AgentCategory] || category,
-    savings: getSavingsValue(breakdown),
-    category: category as AgentCategory,
-  })) : [];
-
-  const platformChartData = savings ? Object.entries(savings.byPlatform).map(([platform, breakdown]) => ({
-    name: platformLabels[platform] || platform,
-    savings: getSavingsValue(breakdown),
-    platform,
-  })) : [];
 
   const formatCurrency = (value: number) => {
     if (value >= 1000000) {
@@ -109,149 +109,190 @@ export default function Dashboard() {
     return `$${value.toFixed(0)}`;
   };
 
-  const totalSavings = savings ? getSavingsValue(savings.total) : 0;
+  const totalSavings = savings ? savings.total.monthly : 0;
+  const activeAgents = agents.filter(a => a.status === 'active').length;
+  const errorAgents = agents.filter(a => a.status === 'error' || a.status === 'degraded').length;
+
+  const handleAgentClick = (agentId: string) => {
+    navigate(`/agents/${agentId}`);
+  };
 
   return (
     <div className={styles.dashboard}>
       <PageHeader
         title="AI Agent Command Center"
-        description="Monitor your Retail AI agents across D365 platforms. Track transaction savings, review agent performance, and access explainable decision logs for every automated action."
+        description="Real-time monitoring of all AI agents across your D365 platforms."
+        actions={
+          <div className={styles.headerActions}>
+            <div className={styles.viewToggle}>
+              <button
+                className={`${styles.viewButton} ${view === 'watchtower' ? styles.active : ''}`}
+                onClick={() => setView('watchtower')}
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <rect x="3" y="3" width="7" height="7" />
+                  <rect x="14" y="3" width="7" height="7" />
+                  <rect x="3" y="14" width="7" height="7" />
+                  <rect x="14" y="14" width="7" height="7" />
+                </svg>
+                Watchtower
+              </button>
+              <button
+                className={`${styles.viewButton} ${view === 'analytics' ? styles.active : ''}`}
+                onClick={() => setView('analytics')}
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <line x1="18" y1="20" x2="18" y2="10" />
+                  <line x1="12" y1="20" x2="12" y2="4" />
+                  <line x1="6" y1="20" x2="6" y2="14" />
+                </svg>
+                Analytics
+              </button>
+            </div>
+            <ExportButton
+              config={{
+                title: 'AI Agent Command Center Report',
+                filename: 'dashboard-report',
+                sections: [
+                  { title: 'Key Metrics', data: { totalSavings, totalTransactions: transactionStats?.totalTransactions, successRate: transactionStats?.successRate, escalationRate: transactionStats?.escalationRate } },
+                  { title: 'Agent Summary', data: agents.map(a => ({ name: a.name, status: a.status, platform: a.platform, transactions: a.metrics.totalConversations, savings: a.metrics.costSavings, escalations: a.metrics.escalations })) },
+                  { title: 'Active Incidents', data: activeIncidents.map(i => ({ id: i.id, title: i.title, severity: i.severity, status: i.status, startedAt: i.startedAt })) },
+                ],
+              }}
+            />
+          </div>
+        }
       />
 
-      {/* Savings Period Toggle */}
-      <div className={styles.periodToggle}>
-        <span className={styles.periodLabel}>View savings:</span>
-        <div className={styles.periodButtons}>
-          {(['daily', 'weekly', 'monthly', 'yearly'] as SavingsPeriod[]).map(period => (
-            <button
-              key={period}
-              className={`${styles.periodButton} ${savingsPeriod === period ? styles.active : ''}`}
-              onClick={() => setSavingsPeriod(period)}
-            >
-              {period.charAt(0).toUpperCase() + period.slice(1)}
-            </button>
-          ))}
+      {/* Compact Metrics Row */}
+      <div className={styles.compactMetrics}>
+        <div className={styles.compactMetric}>
+          <span className={styles.compactValue}>{agents.length}</span>
+          <span className={styles.compactLabel}>Total Agents</span>
+        </div>
+        <div className={styles.compactDivider} />
+        <div className={styles.compactMetric}>
+          <span className={`${styles.compactValue} ${styles.success}`}>{activeAgents}</span>
+          <span className={styles.compactLabel}>Active</span>
+        </div>
+        <div className={styles.compactDivider} />
+        <div className={styles.compactMetric}>
+          <span className={`${styles.compactValue} ${errorAgents > 0 ? styles.error : ''}`}>{errorAgents}</span>
+          <span className={styles.compactLabel}>Issues</span>
+        </div>
+        <div className={styles.compactDivider} />
+        <div className={styles.compactMetric}>
+          <span className={`${styles.compactValue} ${styles.savings}`}>{formatCurrency(totalSavings)}</span>
+          <span className={styles.compactLabel}>Monthly Savings</span>
+        </div>
+        <div className={styles.compactDivider} />
+        <div className={styles.compactMetric}>
+          <span className={styles.compactValue}>{transactionStats?.totalTransactions.toLocaleString() || 0}</span>
+          <span className={styles.compactLabel}>Transactions (7d)</span>
+        </div>
+        <div className={styles.compactDivider} />
+        <div className={styles.compactMetric}>
+          <span className={styles.compactValue}>{((transactionStats?.successRate || 0) * 100).toFixed(1)}%</span>
+          <span className={styles.compactLabel}>Success Rate</span>
+        </div>
+        <div className={styles.compactDivider} />
+        <div className={styles.compactMetric}>
+          <span className={`${styles.compactValue} ${(transactionStats?.escalationRate || 0) > 0.05 ? styles.warning : ''}`}>
+            {((transactionStats?.escalationRate || 0) * 100).toFixed(1)}%
+          </span>
+          <span className={styles.compactLabel}>Escalations</span>
+        </div>
+        <div className={styles.refreshControls}>
+          <button
+            className={`${styles.refreshButton} ${refreshing ? styles.spinning : ''}`}
+            onClick={handleManualRefresh}
+            disabled={refreshing}
+            title="Refresh now"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M23 4v6h-6" />
+              <path d="M1 20v-6h6" />
+              <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" />
+            </svg>
+          </button>
+          <div className={styles.refreshInfo}>
+            <span className={styles.refreshLabel}>Updated:</span>
+            <span className={styles.refreshTime}>{lastRefresh.toLocaleTimeString()}</span>
+          </div>
+          <select
+            className={styles.autoRefreshSelect}
+            value={autoRefreshInterval}
+            onChange={(e) => setAutoRefreshInterval(Number(e.target.value))}
+            title="Auto-refresh interval"
+          >
+            {AUTO_REFRESH_INTERVALS.map(opt => (
+              <option key={opt.value} value={opt.value}>
+                {opt.value === 0 ? 'Auto: Off' : `Auto: ${opt.label}`}
+              </option>
+            ))}
+          </select>
         </div>
       </div>
 
-      {/* Key Metrics */}
-      <div className={styles.metrics}>
-        <Card className={`${styles.metricCard} ${styles.savingsCard}`}>
-          <div className={styles.metricIcon} style={{ backgroundColor: 'rgba(16, 124, 16, 0.1)', color: '#107c10' }}>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <line x1="12" y1="1" x2="12" y2="23" />
-              <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-            </svg>
-          </div>
-          <div className={styles.metricContent}>
-            <div className={styles.metricValue}>{formatCurrency(totalSavings)}</div>
-            <div className={styles.metricLabel}>Total Savings ({savingsPeriod})</div>
-          </div>
-        </Card>
-        <Card className={styles.metricCard}>
-          <div className={styles.metricIcon} style={{ backgroundColor: 'rgba(0, 120, 212, 0.1)', color: '#0078d4' }}>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
-              <line x1="3" y1="9" x2="21" y2="9" />
-              <line x1="9" y1="21" x2="9" y2="9" />
-            </svg>
-          </div>
-          <div className={styles.metricContent}>
-            <div className={styles.metricValue}>{transactionStats?.totalTransactions.toLocaleString() || 0}</div>
-            <div className={styles.metricLabel}>Transactions (7d)</div>
-          </div>
-        </Card>
-        <Card className={styles.metricCard}>
-          <div className={styles.metricIcon} style={{ backgroundColor: 'rgba(135, 100, 184, 0.1)', color: '#8764b8' }}>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-              <polyline points="22 4 12 14.01 9 11.01" />
-            </svg>
-          </div>
-          <div className={styles.metricContent}>
-            <div className={styles.metricValue}>{((transactionStats?.successRate || 0) * 100).toFixed(1)}%</div>
-            <div className={styles.metricLabel}>Success Rate</div>
-          </div>
-        </Card>
-        <Card className={styles.metricCard}>
-          <div className={styles.metricIcon} style={{ backgroundColor: 'rgba(209, 52, 56, 0.1)', color: '#d13438' }}>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      {/* Active Incident Banner (if any) */}
+      {primaryIncident && (
+        <div className={styles.incidentBanner} onClick={() => navigate(`/incidents/${primaryIncident.id}`)}>
+          <div className={styles.incidentBannerIcon}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
               <line x1="12" y1="9" x2="12" y2="13" />
               <line x1="12" y1="17" x2="12.01" y2="17" />
             </svg>
           </div>
-          <div className={styles.metricContent}>
-            <div className={styles.metricValue}>{((transactionStats?.escalationRate || 0) * 100).toFixed(1)}%</div>
-            <div className={styles.metricLabel}>Escalation Rate</div>
+          <div className={styles.incidentBannerContent}>
+            <span className={styles.incidentBannerTitle}>{primaryIncident.title}</span>
+            <span className={styles.incidentBannerMeta}>
+              {primaryIncident.affectedStores.length} stores affected • {primaryIncident.status}
+            </span>
           </div>
-        </Card>
-      </div>
-
-      {/* Main Content Grid */}
-      <div className={styles.mainGrid}>
-        {/* Left Column - Savings Charts */}
-        <div className={styles.leftColumn}>
-          {/* Savings by Category */}
-          <Card className={styles.chartCard}>
-            <h2 className={styles.sectionTitle}>Savings by Agent Category</h2>
-            <p className={styles.sectionDescription}>
-              Net savings generated by each category of AI agents ({savingsPeriod} view).
-            </p>
-            <div className={styles.chartContainer}>
-              <ResponsiveContainer width="100%" height={280}>
-                <BarChart data={categoryChartData} layout="vertical">
-                  <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" horizontal={true} vertical={false} />
-                  <XAxis type="number" tick={{ fontSize: 11 }} tickFormatter={(v) => formatCurrency(v)} />
-                  <YAxis dataKey="name" type="category" tick={{ fontSize: 11 }} width={100} />
-                  <Tooltip
-                    formatter={(value: number) => [formatCurrency(value), 'Savings']}
-                    contentStyle={{ borderRadius: 8, border: '1px solid #e5e7eb' }}
-                  />
-                  <Bar dataKey="savings" radius={[0, 4, 4, 0]}>
-                    {categoryChartData.map((entry) => (
-                      <Cell key={entry.category} fill={categoryColors[entry.category]} />
-                    ))}
-                  </Bar>
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-          </Card>
-
-          {/* Savings by Platform */}
-          <Card className={styles.chartCard}>
-            <h2 className={styles.sectionTitle}>Savings by D365 Platform</h2>
-            <p className={styles.sectionDescription}>
-              Distribution of savings across your D365 deployment environments.
-            </p>
-            <div className={styles.platformGrid}>
-              {platformChartData.map(item => (
-                <div key={item.platform} className={styles.platformItem}>
-                  <div className={styles.platformHeader}>
-                    <div className={styles.platformDot} style={{ backgroundColor: platformColors[item.platform] }} />
-                    <span className={styles.platformName}>{item.name}</span>
-                  </div>
-                  <div className={styles.platformValue}>{formatCurrency(item.savings)}</div>
-                  <div className={styles.platformBar}>
-                    <div
-                      className={styles.platformProgress}
-                      style={{
-                        width: `${(item.savings / totalSavings) * 100}%`,
-                        backgroundColor: platformColors[item.platform],
-                      }}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </Card>
+          <span className={styles.incidentBannerAction}>View Details →</span>
         </div>
+      )}
 
-        {/* Right Column - Incidents & Categories */}
-        <div className={styles.rightColumn}>
-          {/* Active Incident or All Clear */}
+      {view === 'watchtower' ? (
+        <>
+          {/* Main Watchtower Table */}
+          <Card className={styles.watchtowerCard}>
+            <div className={styles.watchtowerHeader}>
+              <h2 className={styles.watchtowerTitle}>Agent Status Overview</h2>
+              <span className={styles.watchtowerCount}>{agents.length} agents</span>
+            </div>
+            <AgentWatchtowerTable agents={agents} onAgentClick={handleAgentClick} />
+          </Card>
+
+          {/* Integration Status */}
+          <IntegrationStatus agents={agents} />
+        </>
+      ) : (
+        /* Analytics View - Simplified version of old dashboard */
+        <div className={styles.analyticsGrid}>
+          <Card className={styles.analyticsCard}>
+            <h2 className={styles.sectionTitle}>Savings by Category</h2>
+            <p className={styles.sectionDescription}>
+              Navigate to the Cost Analysis page for detailed breakdowns.
+            </p>
+            <button className={styles.navButton} onClick={() => navigate('/costs')}>
+              View Cost Analysis →
+            </button>
+          </Card>
+
+          <Card className={styles.analyticsCard}>
+            <h2 className={styles.sectionTitle}>Transaction Logs</h2>
+            <p className={styles.sectionDescription}>
+              Access full explainability logs for all agent transactions.
+            </p>
+            <button className={styles.navButton} onClick={() => navigate('/explainability')}>
+              View Transaction Logs →
+            </button>
+          </Card>
+
           {primaryIncident ? (
-            <Card className={styles.incidentDetailCard}>
+            <Card className={styles.analyticsCard}>
               <h2 className={styles.sectionTitle}>Active Business Event</h2>
               <IncidentCard
                 id={primaryIncident.id}
@@ -264,87 +305,31 @@ export default function Dashboard() {
                 startedAt={new Date(primaryIncident.startedAt)}
                 onClick={() => navigate(`/incidents/${primaryIncident.id}`)}
               />
-
-              <h3 className={styles.timelineTitle}>Agent Response Timeline</h3>
-              <IncidentTimeline
-                events={primaryIncident.timeline.map(e => ({
-                  ...e,
-                  timestamp: new Date(e.timestamp),
-                }))}
-                maxEvents={4}
-              />
             </Card>
           ) : (
-            <Card className={styles.noIncidentCard}>
-              <div className={styles.noIncidentIcon}>
+            <Card className={styles.analyticsCard}>
+              <div className={styles.allClear}>
                 <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                   <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
                   <polyline points="22 4 12 14.01 9 11.01" />
                 </svg>
+                <h3>All Systems Normal</h3>
+                <p>No active business events requiring attention.</p>
               </div>
-              <h3>All Systems Normal</h3>
-              <p>No active business events requiring attention. All AI agents operating within expected parameters.</p>
             </Card>
           )}
 
-          {/* Agent Categories */}
-          <Card className={styles.categoriesCard}>
-            <h2 className={styles.sectionTitle}>Agent Categories</h2>
+          <Card className={styles.analyticsCard}>
+            <h2 className={styles.sectionTitle}>Agent Management</h2>
             <p className={styles.sectionDescription}>
-              {categories.length} specialized categories, {categories.reduce((sum, c) => sum + c.count, 0)} total agents
+              Configure agents, review performance, and manage deployments.
             </p>
-            <div className={styles.categoriesList}>
-              {categories.map(cat => (
-                <div
-                  key={cat.category}
-                  className={styles.categoryItem}
-                  onClick={() => navigate(`/agents?category=${cat.category}`)}
-                >
-                  <div className={styles.categoryColor} style={{ backgroundColor: categoryColors[cat.category] }} />
-                  <div className={styles.categoryInfo}>
-                    <span className={styles.categoryName}>{categoryLabels[cat.category]}</span>
-                    <span className={styles.categoryCount}>{cat.count} agents</span>
-                  </div>
-                  <CategoryBadge category={cat.category} size="small" />
-                </div>
-              ))}
-            </div>
+            <button className={styles.navButton} onClick={() => navigate('/agents')}>
+              Manage Agents →
+            </button>
           </Card>
         </div>
-      </div>
-
-      {/* Quick Actions */}
-      <Card className={styles.quickActionsCard}>
-        <h2 className={styles.sectionTitle}>Quick Actions</h2>
-        <div className={styles.quickActions}>
-          <button className={styles.quickAction} onClick={() => navigate('/explainability')}>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-              <polyline points="14 2 14 8 20 8" />
-              <line x1="16" y1="13" x2="8" y2="13" />
-              <line x1="16" y1="17" x2="8" y2="17" />
-            </svg>
-            <span>View Transaction Logs</span>
-            <span className={styles.quickActionDesc}>Review agent decisions with full explainability</span>
-          </button>
-          <button className={styles.quickAction} onClick={() => navigate('/agents')}>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <circle cx="12" cy="12" r="10" />
-              <path d="M12 6v6l4 2" />
-            </svg>
-            <span>Manage Agents</span>
-            <span className={styles.quickActionDesc}>Configure pricing and platform deployments</span>
-          </button>
-          <button className={styles.quickAction} onClick={() => navigate('/costs')}>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <line x1="12" y1="1" x2="12" y2="23" />
-              <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-            </svg>
-            <span>Cost Analysis</span>
-            <span className={styles.quickActionDesc}>Track transaction costs and ROI by category</span>
-          </button>
-        </div>
-      </Card>
+      )}
     </div>
   );
 }

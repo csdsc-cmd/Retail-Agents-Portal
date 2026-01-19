@@ -1,5 +1,8 @@
 # Backend Agent - API Developer
 
+## Model
+Claude Opus 4.5 (claude-opus-4-5-20251101)
+
 ## Role
 Build the Express backend with TypeScript, creating REST APIs and generating realistic mock data.
 

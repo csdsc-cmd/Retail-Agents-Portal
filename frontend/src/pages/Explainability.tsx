@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import Card from '../components/common/Card';
 import { PageHeader } from '../components/common/PageHeader';
+import ExportButton from '../components/common/ExportButton';
 import { getTransactions, getTransactionStats, getTransaction } from '../services/api';
 import type { AgentTransactionLog, TransactionStats, D365Platform, TransactionOutcome } from '../types';
 import styles from './Explainability.module.css';
@@ -94,6 +95,18 @@ export default function Explainability() {
       <PageHeader
         title="Transaction Explainability"
         description="Review every decision made by your AI agents with full transparency. Each transaction includes the input data, reasoning steps, business rules applied, and final decision for audit and compliance purposes."
+        actions={
+          <ExportButton
+            config={{
+              title: 'Transaction Explainability Report',
+              filename: 'explainability-report',
+              sections: [
+                { title: 'Transaction Statistics', data: { totalTransactions: stats?.totalTransactions, successRate: stats?.successRate, totalSavings: stats?.totalSavings, escalationRate: stats?.escalationRate } },
+                { title: 'Transactions', data: transactions.map(tx => ({ agent: tx.agentName, type: tx.transactionType, platform: platformLabels[tx.platform], outcome: outcomeLabels[tx.outcome], confidence: tx.confidenceScore, costSaved: tx.costSaved, timestamp: tx.timestamp })) },
+              ],
+            }}
+          />
+        }
       />
 
       {/* Stats Cards */}

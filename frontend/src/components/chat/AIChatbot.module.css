@@ -1,0 +1,394 @@
+/* Toggle Button */
+.toggleButton {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-primary-500) 0%, var(--color-primary-600) 100%);
+  color: white;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 120, 212, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  z-index: 1000;
+}
+
+.toggleButton:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(0, 120, 212, 0.4);
+}
+
+.toggleButton.open {
+  background: var(--color-gray-600);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Chat Panel */
+.chatPanel {
+  position: fixed;
+  bottom: 96px;
+  right: 24px;
+  width: 380px;
+  height: 520px;
+  background-color: var(--bg-card);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
+  overflow: hidden;
+  animation: slideUp 0.2s ease;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Chat Header */
+.chatHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  background: linear-gradient(135deg, var(--color-primary-500) 0%, var(--color-primary-600) 100%);
+  color: white;
+}
+
+.chatHeaderIcon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chatHeaderContent h3 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.chatHeaderStatus {
+  font-size: 12px;
+  opacity: 0.9;
+}
+
+/* Messages */
+.chatMessages {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.message {
+  max-width: 85%;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.message.user {
+  align-self: flex-end;
+}
+
+.message.assistant {
+  align-self: flex-start;
+}
+
+.messageContent {
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.message.user .messageContent {
+  background-color: var(--color-primary-500);
+  color: white;
+  border-bottom-right-radius: 4px;
+}
+
+.message.assistant .messageContent {
+  background-color: var(--color-gray-100);
+  color: var(--color-gray-800);
+  border-bottom-left-radius: 4px;
+}
+
+.messageContent p {
+  margin: 0;
+}
+
+.messageContent p + p {
+  margin-top: var(--space-2);
+}
+
+.messageTime {
+  font-size: 11px;
+  color: var(--color-gray-400);
+  padding: 0 var(--space-2);
+}
+
+.message.user .messageTime {
+  text-align: right;
+}
+
+/* Typing Indicator */
+.typingIndicator {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: var(--space-3);
+  background-color: var(--color-gray-100);
+  border-radius: var(--radius-md);
+  border-bottom-left-radius: 4px;
+}
+
+.typingIndicator span {
+  width: 8px;
+  height: 8px;
+  background-color: var(--color-gray-400);
+  border-radius: 50%;
+  animation: bounce 1.4s ease-in-out infinite;
+}
+
+.typingIndicator span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.typingIndicator span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes bounce {
+  0%, 60%, 100% {
+    transform: translateY(0);
+  }
+  30% {
+    transform: translateY(-4px);
+  }
+}
+
+/* Suggested Actions */
+.suggestedActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  padding: 0 var(--space-4) var(--space-3);
+}
+
+.actionButton {
+  padding: var(--space-2) var(--space-3);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-primary-600);
+  background-color: var(--color-primary-50);
+  border: 1px solid var(--color-primary-200);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.actionButton:hover {
+  background-color: var(--color-primary-100);
+  border-color: var(--color-primary-300);
+}
+
+/* Quick Questions */
+.quickQuestions {
+  padding: var(--space-3) var(--space-4);
+  border-top: 1px solid var(--color-gray-200);
+  background-color: var(--color-gray-50);
+}
+
+.quickLabel {
+  font-size: 11px;
+  color: var(--color-gray-500);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  display: block;
+  margin-bottom: var(--space-2);
+}
+
+.quickButtons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.quickButton {
+  padding: var(--space-1) var(--space-2);
+  font-size: 12px;
+  color: var(--color-gray-600);
+  background-color: white;
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.quickButton:hover {
+  color: var(--color-primary-600);
+  border-color: var(--color-primary-300);
+  background-color: var(--color-primary-50);
+}
+
+/* Chat Input */
+.chatInput {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  border-top: 1px solid var(--color-gray-200);
+  background-color: var(--bg-card);
+}
+
+.chatInput input {
+  flex: 1;
+  padding: var(--space-2) var(--space-3);
+  font-size: 14px;
+  color: var(--color-gray-800);
+  background-color: var(--color-gray-50);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-md);
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.chatInput input:focus {
+  border-color: var(--color-primary-400);
+}
+
+.chatInput input::placeholder {
+  color: var(--color-gray-400);
+}
+
+.chatInput button {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-primary-500);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.chatInput button:hover:not(:disabled) {
+  background-color: var(--color-primary-600);
+}
+
+.chatInput button:disabled {
+  background-color: var(--color-gray-300);
+  cursor: not-allowed;
+}
+
+/* Dark Mode */
+[data-theme="dark"] .chatPanel {
+  background-color: var(--dark-bg-secondary);
+  border-color: var(--dark-border);
+}
+
+[data-theme="dark"] .toggleButton.open {
+  background: var(--dark-bg-tertiary);
+}
+
+[data-theme="dark"] .message.assistant .messageContent {
+  background-color: var(--dark-bg-tertiary);
+  color: var(--dark-text-primary);
+}
+
+[data-theme="dark"] .messageTime {
+  color: var(--dark-text-tertiary);
+}
+
+[data-theme="dark"] .typingIndicator {
+  background-color: var(--dark-bg-tertiary);
+}
+
+[data-theme="dark"] .typingIndicator span {
+  background-color: var(--dark-text-tertiary);
+}
+
+[data-theme="dark"] .actionButton {
+  background-color: rgba(0, 120, 212, 0.15);
+  border-color: var(--dark-border);
+  color: var(--color-primary-400);
+}
+
+[data-theme="dark"] .actionButton:hover {
+  background-color: rgba(0, 120, 212, 0.25);
+}
+
+[data-theme="dark"] .quickQuestions {
+  background-color: var(--dark-bg-tertiary);
+  border-color: var(--dark-border);
+}
+
+[data-theme="dark"] .quickButton {
+  background-color: var(--dark-bg-secondary);
+  border-color: var(--dark-border);
+  color: var(--dark-text-secondary);
+}
+
+[data-theme="dark"] .quickButton:hover {
+  color: var(--color-primary-400);
+  background-color: rgba(0, 120, 212, 0.1);
+}
+
+[data-theme="dark"] .chatInput {
+  background-color: var(--dark-bg-secondary);
+  border-color: var(--dark-border);
+}
+
+[data-theme="dark"] .chatInput input {
+  background-color: var(--dark-bg-tertiary);
+  border-color: var(--dark-border);
+  color: var(--dark-text-primary);
+}
+
+[data-theme="dark"] .chatInput input::placeholder {
+  color: var(--dark-text-tertiary);
+}
+
+[data-theme="dark"] .chatInput button:disabled {
+  background-color: var(--dark-bg-tertiary);
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .chatPanel {
+    width: calc(100vw - 48px);
+    height: calc(100vh - 160px);
+    bottom: 88px;
+    right: 24px;
+    left: 24px;
+  }
+
+  .toggleButton {
+    width: 48px;
+    height: 48px;
+    bottom: 16px;
+    right: 16px;
+  }
+}

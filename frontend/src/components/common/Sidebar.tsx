@@ -1,5 +1,48 @@
+import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import AlertBadge from '../notifications/AlertBadge';
+import NotificationCenter from '../notifications/NotificationCenter';
+import { Notification } from '../notifications/NotificationItem';
 import styles from './Sidebar.module.css';
+
+// Mock notifications for demo
+const initialNotifications: Notification[] = [
+  {
+    id: '1',
+    type: 'success',
+    title: 'Cost savings milestone reached: $850,000',
+    timestamp: '5 minutes ago',
+    read: false
+  },
+  {
+    id: '2',
+    type: 'warning',
+    title: 'Inventory Scout detected unusual pattern at Store #142',
+    timestamp: '12 minutes ago',
+    read: false
+  },
+  {
+    id: '3',
+    type: 'critical',
+    title: 'Pricing Agent flagged $12,340 decision for review',
+    timestamp: '23 minutes ago',
+    read: false
+  },
+  {
+    id: '4',
+    type: 'info',
+    title: 'Weekly performance report ready for review',
+    timestamp: '1 hour ago',
+    read: true
+  },
+  {
+    id: '5',
+    type: 'success',
+    title: 'Customer Service Agent resolved 47 queries automatically',
+    timestamp: '2 hours ago',
+    read: true
+  }
+];
 
 const navItems = [
   { path: '/', label: 'Command Center', icon: 'GridViewRounded' },
@@ -57,21 +100,41 @@ const icons: Record<string, JSX.Element> = {
 };
 
 export default function Sidebar() {
+  const [notifications, setNotifications] = useState<Notification[]>(initialNotifications);
+  const [isNotificationPanelOpen, setIsNotificationPanelOpen] = useState(false);
+
+  const unreadCount = notifications.filter(n => !n.read).length;
+
+  const handleMarkAsRead = (id: string) => {
+    setNotifications(prev =>
+      prev.map(n => n.id === id ? { ...n, read: true } : n)
+    );
+  };
+
+  const handleMarkAllAsRead = () => {
+    setNotifications(prev => prev.map(n => ({ ...n, read: true })));
+  };
+
   return (
-    <aside className={styles.sidebar}>
-      <div className={styles.header}>
-        <div className={styles.logo}>
-          <div className={styles.logoIcon}>
-            <svg viewBox="0 0 24 24" fill="currentColor" width="28" height="28">
-              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
-            </svg>
+    <>
+      <aside className={styles.sidebar}>
+        <div className={styles.header}>
+          <div className={styles.logo}>
+            <div className={styles.logoIcon}>
+              <svg viewBox="0 0 24 24" fill="currentColor" width="28" height="28">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+              </svg>
+            </div>
+            <div className={styles.logoText}>
+              <span className={styles.logoTitle}>Retail AI</span>
+              <span className={styles.logoSubtitle}>Command Center</span>
+            </div>
           </div>
-          <div className={styles.logoText}>
-            <span className={styles.logoTitle}>Retail AI</span>
-            <span className={styles.logoSubtitle}>Command Center</span>
-          </div>
+          <AlertBadge
+            count={unreadCount}
+            onClick={() => setIsNotificationPanelOpen(!isNotificationPanelOpen)}
+          />
         </div>
-      </div>
 
       <nav className={styles.nav}>
         {navItems.map(item => (
@@ -96,5 +159,14 @@ export default function Sidebar() {
         </div>
       </div>
     </aside>
+
+      <NotificationCenter
+        isOpen={isNotificationPanelOpen}
+        onClose={() => setIsNotificationPanelOpen(false)}
+        notifications={notifications}
+        onMarkAsRead={handleMarkAsRead}
+        onMarkAllAsRead={handleMarkAllAsRead}
+      />
+    </>
   );
 }

@@ -8,6 +8,7 @@ import Metrics from './pages/Metrics';
 import Costs from './pages/Costs';
 import Conversations from './pages/Conversations';
 import Governance from './pages/Governance';
+import AIChatbot from './components/chat/AIChatbot';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path="/conversations" element={<Conversations />} />
         <Route path="/governance" element={<Governance />} />
       </Routes>
+      <AIChatbot />
     </Layout>
   );
 }

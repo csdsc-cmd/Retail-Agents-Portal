@@ -1,4 +1,4 @@
-export type AgentStatus = 'active' | 'inactive' | 'error';
+export type AgentStatus = 'active' | 'inactive' | 'error' | 'degraded';
 export type Sentiment = 'positive' | 'neutral' | 'negative';
 export type ConversationStatus = 'active' | 'completed' | 'failed';
 export type UserRole = 'admin' | 'operator' | 'viewer';
@@ -44,6 +44,9 @@ export interface AgentMetricsSummary {
   totalConversations: number;
   avgResponseTime: number;
   successRate: number;
+  costSavings?: number;
+  escalations?: number;
+  dailyTransactions?: number[];
 }
 
 // Transaction pricing for agents
@@ -83,6 +86,7 @@ export interface Agent {
   pricing: TransactionPricing;
   savings: SavingsBreakdown;
   platforms: PlatformDeployment[];
+  platform: D365Platform; // Primary platform
   roiMetric: string;
 }
 

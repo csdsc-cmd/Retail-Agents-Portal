@@ -1,0 +1,287 @@
+.container {
+  background-color: var(--bg-card);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-3);
+}
+
+.titleRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-gray-600);
+}
+
+.title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-gray-700);
+  margin: 0;
+}
+
+.currentBudget {
+  font-size: 13px;
+  color: var(--color-gray-500);
+}
+
+.currentBudget strong {
+  color: var(--color-primary-600);
+  font-weight: 600;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.description {
+  font-size: 13px;
+  color: var(--color-gray-500);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.presets {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.presetLabel {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-gray-600);
+}
+
+.presetButtons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.presetButton {
+  padding: var(--space-2) var(--space-3);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-gray-600);
+  background-color: var(--color-gray-100);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.presetButton:hover {
+  background-color: var(--color-gray-200);
+  border-color: var(--color-gray-300);
+}
+
+.presetButton.active {
+  background-color: var(--color-primary-50);
+  border-color: var(--color-primary-300);
+  color: var(--color-primary-600);
+}
+
+.customSection {
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--color-gray-200);
+}
+
+.customButton {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-gray-600);
+  background: none;
+  border: 1px dashed var(--color-gray-300);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.customButton:hover {
+  color: var(--color-primary-600);
+  border-color: var(--color-primary-400);
+  background-color: var(--color-primary-50);
+}
+
+.customForm {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.inputWrapper {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  background-color: var(--color-gray-50);
+  border: 1px solid var(--color-gray-300);
+  border-radius: var(--radius-md);
+  padding: 0 var(--space-3);
+}
+
+.inputWrapper:focus-within {
+  border-color: var(--color-primary-500);
+  box-shadow: 0 0 0 3px rgba(0, 120, 212, 0.1);
+}
+
+.currencySymbol {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-gray-500);
+}
+
+.customInput {
+  flex: 1;
+  padding: var(--space-2) 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-gray-800);
+  background: none;
+  border: none;
+  outline: none;
+  font-variant-numeric: tabular-nums;
+}
+
+.customInput::-webkit-inner-spin-button,
+.customInput::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.formActions {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.saveButton {
+  padding: var(--space-2) var(--space-4);
+  font-size: 13px;
+  font-weight: 500;
+  color: white;
+  background-color: var(--color-primary-500);
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.saveButton:hover {
+  background-color: var(--color-primary-600);
+}
+
+.cancelButton {
+  padding: var(--space-2) var(--space-4);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-gray-600);
+  background-color: var(--color-gray-100);
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.cancelButton:hover {
+  background-color: var(--color-gray-200);
+}
+
+/* Dark Mode */
+[data-theme="dark"] .container {
+  background-color: var(--dark-bg-secondary);
+  border-color: var(--dark-border);
+}
+
+[data-theme="dark"] .titleRow {
+  color: var(--dark-text-secondary);
+}
+
+[data-theme="dark"] .title {
+  color: var(--dark-text-primary);
+}
+
+[data-theme="dark"] .currentBudget {
+  color: var(--dark-text-secondary);
+}
+
+[data-theme="dark"] .currentBudget strong {
+  color: var(--color-primary-400);
+}
+
+[data-theme="dark"] .description {
+  color: var(--dark-text-secondary);
+}
+
+[data-theme="dark"] .presetLabel {
+  color: var(--dark-text-secondary);
+}
+
+[data-theme="dark"] .presetButton {
+  color: var(--dark-text-secondary);
+  background-color: var(--dark-bg-tertiary);
+  border-color: var(--dark-border);
+}
+
+[data-theme="dark"] .presetButton:hover {
+  background-color: var(--dark-bg-primary);
+  border-color: var(--color-gray-500);
+}
+
+[data-theme="dark"] .presetButton.active {
+  background-color: rgba(0, 120, 212, 0.2);
+  border-color: var(--color-primary-400);
+  color: var(--color-primary-400);
+}
+
+[data-theme="dark"] .customSection {
+  border-color: var(--dark-border);
+}
+
+[data-theme="dark"] .customButton {
+  color: var(--dark-text-secondary);
+  border-color: var(--dark-border);
+}
+
+[data-theme="dark"] .customButton:hover {
+  color: var(--color-primary-400);
+  border-color: var(--color-primary-400);
+  background-color: rgba(0, 120, 212, 0.1);
+}
+
+[data-theme="dark"] .inputWrapper {
+  background-color: var(--dark-bg-tertiary);
+  border-color: var(--dark-border);
+}
+
+[data-theme="dark"] .inputWrapper:focus-within {
+  border-color: var(--color-primary-400);
+}
+
+[data-theme="dark"] .currencySymbol {
+  color: var(--dark-text-secondary);
+}
+
+[data-theme="dark"] .customInput {
+  color: var(--dark-text-primary);
+}
+
+[data-theme="dark"] .cancelButton {
+  color: var(--dark-text-secondary);
+  background-color: var(--dark-bg-tertiary);
+}
+
+[data-theme="dark"] .cancelButton:hover {
+  background-color: var(--dark-bg-primary);
+}

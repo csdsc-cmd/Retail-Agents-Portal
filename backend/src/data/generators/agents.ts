@@ -356,18 +356,18 @@ function generatePlatformDeployments(
 function generateAgent(definition: AgentDefinition, index: number): Agent {
   const createdAt = faker.date.past({ years: 1 });
 
-  // Weight status - executive insights more likely active
-  const statusWeights = definition.category === 'executive-insights'
-    ? [{ value: 'active' as AgentStatus, weight: 9 }, { value: 'inactive' as AgentStatus, weight: 1 }]
-    : [{ value: 'active' as AgentStatus, weight: 7 }, { value: 'inactive' as AgentStatus, weight: 2 }, { value: 'error' as AgentStatus, weight: 1 }];
+  // Make almost all agents healthy (active) with ONE specific agent having an issue
+  // Agent at index 8 (Competitor Price Monitor) will have "degraded" status
+  // This creates a realistic scenario where most things are working well but one needs attention
+  let status: AgentStatus = 'active';
+  if (index === 8) {
+    status = 'degraded'; // Competitor Price Monitor has degraded status
+  }
 
-  const status = faker.helpers.weightedArrayElement(statusWeights);
-
+  // Active agents were active recently, degraded ones a few days ago
   const lastActiveAt = status === 'active'
     ? faker.date.recent({ days: 1 })
-    : status === 'inactive'
-      ? faker.date.recent({ days: 30 })
-      : faker.date.recent({ days: 7 });
+    : faker.date.recent({ days: 3 }); // degraded agents have been struggling for a few days
 
   const model = definition.preferredModel || faker.helpers.arrayElement(MODELS);
 
@@ -390,6 +390,20 @@ function generateAgent(definition: AgentDefinition, index: number): Agent {
     definition.avgTransactionsPerDay
   );
 
+  // Generate daily transaction trend data (7 days)
+  const dailyTransactions = Array.from({ length: 7 }, () =>
+    Math.floor(definition.avgTransactionsPerDay * faker.number.float({ min: 0.7, max: 1.3 }))
+  );
+
+  // Calculate escalations - low for healthy agents, higher for degraded
+  const escalationRate = status === 'degraded' ? 0.08 : 0.02;
+  const escalations = Math.floor(definition.avgTransactionsPerDay * escalationRate * faker.number.float({ min: 0.5, max: 1.5 }));
+
+  // Success rate - high for healthy agents, lower for degraded
+  const baseSuccessRate = status === 'degraded' ? 0.87 : 0.96;
+  const successRateVariance = faker.number.float({ min: -0.02, max: 0.03, fractionDigits: 2 });
+  const successRate = Math.min(0.99, Math.max(0.85, baseSuccessRate + successRateVariance));
+
   return {
     id: faker.string.uuid(),
     name: definition.name,
@@ -407,11 +421,15 @@ function generateAgent(definition: AgentDefinition, index: number): Agent {
     metrics: {
       totalConversations: Math.max(50, baseConversations + conversationVariance),
       avgResponseTime: faker.number.int({ min: 800, max: 2500 }),
-      successRate: faker.number.float({ min: 0.88, max: 0.99, fractionDigits: 2 }),
+      successRate,
+      costSavings: savings.daily * 30, // Monthly cost savings
+      escalations,
+      dailyTransactions,
     },
     pricing,
     savings,
     platforms,
+    platform: definition.primaryPlatform,
     roiMetric: definition.roiMetric,
   };
 }

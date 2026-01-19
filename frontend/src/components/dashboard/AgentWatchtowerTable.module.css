@@ -1,0 +1,262 @@
+.container {
+  background-color: var(--bg-card);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-gray-200);
+  overflow: hidden;
+}
+
+.tableWrapper {
+  overflow-x: auto;
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.table thead {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: var(--color-gray-50);
+}
+
+.table th {
+  padding: var(--space-3) var(--space-4);
+  text-align: left;
+  font-weight: 600;
+  color: var(--color-gray-600);
+  border-bottom: 1px solid var(--color-gray-200);
+  white-space: nowrap;
+  user-select: none;
+}
+
+.table th.sortable {
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.table th.sortable:hover {
+  background-color: var(--color-gray-100);
+}
+
+.table th.numeric {
+  text-align: right;
+}
+
+.sortIcon {
+  margin-left: var(--space-1);
+  color: var(--color-gray-400);
+  font-size: 11px;
+}
+
+.sortIcon.active {
+  color: var(--color-primary-500);
+}
+
+.table td {
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--color-gray-100);
+  vertical-align: middle;
+}
+
+.row {
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.row:hover {
+  background-color: var(--color-gray-50);
+}
+
+.row:last-child td {
+  border-bottom: none;
+}
+
+.errorRow {
+  background-color: rgba(209, 52, 56, 0.05);
+}
+
+.errorRow:hover {
+  background-color: rgba(209, 52, 56, 0.08);
+}
+
+.degradedRow {
+  background-color: rgba(255, 185, 0, 0.05);
+}
+
+.degradedRow:hover {
+  background-color: rgba(255, 185, 0, 0.08);
+}
+
+/* Agent name cell */
+.agentName {
+  min-width: 200px;
+}
+
+.name {
+  display: block;
+  font-weight: 500;
+  color: var(--color-gray-800);
+}
+
+.category {
+  display: block;
+  font-size: 11px;
+  color: var(--color-gray-500);
+  text-transform: capitalize;
+  margin-top: 2px;
+}
+
+/* Status badge */
+.statusBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  font-size: 11px;
+  font-weight: 600;
+  border: 1px solid;
+}
+
+.statusIcon {
+  font-size: 10px;
+}
+
+/* Platform badge */
+.platformBadge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+  font-weight: 500;
+}
+
+/* Numeric cells */
+.numeric {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.savings {
+  color: var(--color-success);
+  font-weight: 500;
+}
+
+/* Escalation alert */
+.escalationAlert {
+  position: relative;
+  color: var(--color-error);
+  font-weight: 600;
+}
+
+.alertDot {
+  position: absolute;
+  top: 50%;
+  right: -8px;
+  transform: translateY(-50%);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--color-error);
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: translateY(-50%) scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: translateY(-50%) scale(1.2);
+  }
+}
+
+/* Sparkline */
+.sparkline {
+  display: block;
+}
+
+.noData {
+  color: var(--color-gray-400);
+}
+
+/* Empty state */
+.empty {
+  padding: var(--space-8);
+  text-align: center;
+  color: var(--color-gray-500);
+}
+
+/* Footer */
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-3) var(--space-4);
+  background-color: var(--color-gray-50);
+  border-top: 1px solid var(--color-gray-200);
+  font-size: 12px;
+}
+
+.footerText {
+  color: var(--color-gray-600);
+  font-weight: 500;
+}
+
+.footerHint {
+  color: var(--color-gray-400);
+}
+
+/* Dark mode */
+[data-theme="dark"] .container {
+  background-color: var(--dark-bg-secondary);
+  border-color: var(--dark-border);
+}
+
+[data-theme="dark"] .table thead {
+  background-color: var(--dark-bg-tertiary);
+}
+
+[data-theme="dark"] .table th {
+  color: var(--dark-text-secondary);
+  border-color: var(--dark-border);
+}
+
+[data-theme="dark"] .table th.sortable:hover {
+  background-color: var(--dark-bg-primary);
+}
+
+[data-theme="dark"] .table td {
+  border-color: var(--dark-border);
+}
+
+[data-theme="dark"] .row:hover {
+  background-color: var(--dark-bg-tertiary);
+}
+
+[data-theme="dark"] .name {
+  color: var(--dark-text-primary);
+}
+
+[data-theme="dark"] .category {
+  color: var(--dark-text-secondary);
+}
+
+[data-theme="dark"] .footer {
+  background-color: var(--dark-bg-tertiary);
+  border-color: var(--dark-border);
+}
+
+[data-theme="dark"] .footerText {
+  color: var(--dark-text-secondary);
+}
+
+[data-theme="dark"] .footerHint {
+  color: var(--dark-text-secondary);
+}

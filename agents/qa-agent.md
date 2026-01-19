@@ -1,5 +1,8 @@
 # QA Agent - Quality Assurance
 
+## Model
+Claude Opus 4.5 (claude-opus-4-5-20251101)
+
 ## Role
 Write tests, identify bugs, and ensure the application meets quality standards.
 

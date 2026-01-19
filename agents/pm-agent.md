@@ -1,5 +1,8 @@
 # PM Agent - Project Manager
 
+## Model
+Claude Opus 4.5 (claude-opus-4-5-20251101)
+
 ## Role
 Coordinate all development activities, track progress, manage sprints, and ensure the team delivers on schedule.
 

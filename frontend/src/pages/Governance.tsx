@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import Card from '../components/common/Card';
 import { PageHeader } from '../components/common/PageHeader';
+import ExportButton from '../components/common/ExportButton';
 import { getAuditLogs, getUsers } from '../services/api';
 import type { AuditLog, User } from '../types';
 import styles from './Governance.module.css';
@@ -80,6 +81,18 @@ export default function Governance() {
       <PageHeader
         title="Governance & Audit"
         description="Maintain oversight and compliance with comprehensive audit trails. Track all user actions, configuration changes, and incident responses to ensure accountability and support regulatory requirements."
+        actions={
+          <ExportButton
+            config={{
+              title: 'Governance & Audit Report',
+              filename: 'governance-audit-report',
+              sections: [
+                { title: 'System Users', data: users.map(u => ({ name: u.name, email: u.email, role: roleLabels[u.role] })) },
+                { title: 'Audit Trail', data: logs.map(l => ({ timestamp: l.timestamp, user: l.userName, action: actionLabels[l.action]?.label || l.action, resource: l.resource })) },
+              ],
+            }}
+          />
+        }
       />
 
       <div className={styles.sections}>

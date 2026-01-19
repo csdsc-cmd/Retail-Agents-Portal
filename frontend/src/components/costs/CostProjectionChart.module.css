@@ -1,0 +1,92 @@
+.container {
+  background-color: var(--bg-card);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-gray-200);
+  padding: var(--space-4);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-4);
+}
+
+.title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-gray-700);
+  margin: 0;
+}
+
+.projection {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.projectionLabel {
+  font-size: 12px;
+  color: var(--color-gray-500);
+}
+
+.projectionValue {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-success);
+}
+
+.projectionValue.overBudget {
+  color: var(--color-error);
+}
+
+.chartWrapper {
+  height: 250px;
+}
+
+.legend {
+  display: flex;
+  gap: var(--space-6);
+  justify-content: center;
+  margin-top: var(--space-4);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--color-gray-100);
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 11px;
+  color: var(--color-gray-500);
+}
+
+.legendLine {
+  display: inline-block;
+  width: 20px;
+  height: 2px;
+}
+
+.legendLine.actual {
+  background-color: var(--color-primary-500);
+}
+
+.legendLine.projected {
+  background: repeating-linear-gradient(
+    to right,
+    var(--color-gray-500),
+    var(--color-gray-500) 4px,
+    transparent 4px,
+    transparent 8px
+  );
+}
+
+.legendLine.budget {
+  background: repeating-linear-gradient(
+    to right,
+    var(--color-error),
+    var(--color-error) 4px,
+    transparent 4px,
+    transparent 8px
+  );
+}

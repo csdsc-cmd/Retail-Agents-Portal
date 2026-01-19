@@ -1,5 +1,8 @@
 # Ralph Wiggum Agent - Autonomous Orchestrator
 
+## Model
+Claude Opus 4.5 (claude-opus-4-5-20251101)
+
 ## Role
 Enable extended autonomous development sessions through iterative self-improvement loops.
 
