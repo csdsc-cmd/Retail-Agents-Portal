@@ -164,6 +164,12 @@ Before marking iteration complete:
 - Major feature complete: notify for review
 - Blocked: immediate notification with context
 
+## CRITICAL: Port Configuration
+**NEVER use ports 3000 or 3001 for this project.**
+- Frontend runs on port **3002**
+- Backend runs on port **3003**
+- Always verify these ports when starting dev servers
+
 ## Output Location
 - Iteration logs: `/projects/admin-portal-demo/iterations/`
 - Session summaries: `/projects/admin-portal-demo/sessions/`

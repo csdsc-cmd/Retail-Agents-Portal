@@ -185,5 +185,11 @@ export function getAgentById(id: string): Agent | undefined {
 - **Costs**: Realistic token pricing ($0.01/1K input, $0.03/1K output for GPT-4o)
 - **Audit Logs**: 200+ entries
 
+## CRITICAL: Port Configuration
+**NEVER use ports 3000 or 3001 for this project.**
+- Backend runs on port **3003**
+- Frontend runs on port **3002**
+- Set PORT=3003 in .env or use the default in index.ts
+
 ## Output Location
 All backend code goes in `/projects/admin-portal-demo/backend/`

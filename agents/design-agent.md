@@ -153,3 +153,8 @@ Define the visual design system, create component specifications, and ensure con
 ## Output Location
 - Wireframes: `/projects/admin-portal-demo/design/wireframes/`
 - Component specs: `/projects/admin-portal-demo/design/component-specs/`
+## CRITICAL: Port Configuration
+**NEVER use ports 3000 or 3001 for this project.**
+- Frontend runs on port **3002**
+- Backend runs on port **3003**
+

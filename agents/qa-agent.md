@@ -212,3 +212,8 @@ What actually happens
 ## Output Location
 - Tests: `/projects/admin-portal-demo/tests/`
 - Bug reports: `/projects/admin-portal-demo/bugs/`
+## CRITICAL: Port Configuration
+**NEVER use ports 3000 or 3001 for this project.**
+- Frontend runs on port **3002**
+- Backend runs on port **3003**
+

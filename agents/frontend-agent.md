@@ -72,7 +72,7 @@ export function AgentCard({ agent, onSelect }: AgentCardProps) {
 // services/agents.ts
 import type { Agent } from '../types';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3003';
 
 export async function getAgents(): Promise<Agent[]> {
   const response = await fetch(`${API_URL}/api/agents`);
@@ -110,6 +110,12 @@ export function useAgents() {
 - styled-components (use CSS Modules)
 - redux (use React Context if needed)
 - Any CSS framework like Tailwind or Bootstrap
+
+## CRITICAL: Port Configuration
+**NEVER use ports 3000 or 3001 for this project.**
+- Frontend runs on port **3002**
+- Backend runs on port **3003**
+- The proxy in vite.config.ts points to http://localhost:3003
 
 ## Output Location
 All frontend code goes in `/projects/admin-portal-demo/frontend/`

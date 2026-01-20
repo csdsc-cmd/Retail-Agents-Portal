@@ -69,3 +69,8 @@ Create tasks in this format:
 ## Output Location
 - Tasks: `/projects/admin-portal-demo/tasks/`
 - Standups: `/projects/admin-portal-demo/standups/`
+## CRITICAL: Port Configuration
+**NEVER use ports 3000 or 3001 for this project.**
+- Frontend runs on port **3002**
+- Backend runs on port **3003**
+
